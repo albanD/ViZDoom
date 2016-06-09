@@ -6,10 +6,48 @@ screen_border_x, screen_border_y = 20.0,20.0
 win = GraphWin("Map", screen_width, screen_height)
 
 # Id to color mapping
-idToColor = {
-    76: "blue",
-    2060: "green",
-    2061: "green"
+nameToColor = {
+    "DoomPlayer": "blue",
+
+    "Medikit": "green",
+    "Stimpack": "green",
+
+    "HealthBonus": "dark green",
+    "ArmorBonus": "dark green",
+
+    "GreenArmor": "lime green",
+    "BlueArmor": "lime green",
+
+    "ClipBox": "red",
+    "ShellBox": "red",
+    "RocketBox": "red",
+    "ClipBox": "red",
+    "CellPack": "red",
+
+    "Chainsaw": "purple",
+    "RocketLauncher": "purple",
+    "SuperShotgun": "purple",
+    "PlasmaRifle": "purple",
+    "PlasmaRifle": "purple",
+    "Chaingun": "purple",
+
+    "Zombieman": "saddle brown",
+    "ChaingunGuy": "saddle brown",
+    "ShotgunGuy": "saddle brown",
+    "ScriptedMarine": "saddle brown",
+    "BaronOfHell": "saddle brown",
+    "Demon": "saddle brown",
+
+
+    # Seems to be nowhere...
+
+    # We don't want these
+    "TeleportFog": "white",
+    "Blood": "white",
+    "BulletPuff": "white",
+    "RocketSmokeTrail": "white",
+    "Rocket": "white",
+    "PlasmaBall": "white",
 }
 
 # Prevent redoing the same things again and again
@@ -31,7 +69,7 @@ def info_str(game):
     thing_count = game.get_thing_count()
     output += "Nb thing: "+str(thing_count)+"\n"
     for j in range(0, thing_count):
-        output += "Thing "+str(j)+" is at ("+str(game.get_thing_pos_x(j))+";"+str(game.get_thing_pos_y(j))+") and has id "+str(game.get_thing_type(j))+"\n"
+        output += "Thing "+str(j)+" is at ("+str(game.get_thing_pos_x(j))+";"+str(game.get_thing_pos_y(j))+"), has id "+str(game.get_thing_type(j))+" and is named: "+game.get_thing_name(j)+"\n"
 
     return output
 
@@ -96,12 +134,16 @@ def plot_map(game):
     # Add the new things
     thing_count = game.get_thing_count()
     for j in range(0,thing_count):
-        thingType = game.get_thing_type(j)
-        if thingType in idToColor.keys():
+        thingName = game.get_thing_name(j)
+        if thingName in nameToColor.keys():
+            if nameToColor[thingName] == "white":
+                continue
             x = game.get_thing_pos_x(j) * scale_x + pad_x
             y = game.get_thing_pos_y(j) * scale_y + pad_y
-            circle = Circle(Point(x, y), 5*scale_x)
-            circle.setFill(idToColor[thingType])
+            circle = Circle(Point(x, y), 10*scale_x)
+            circle.setFill(nameToColor[thingName])
             circle.draw(win)
             obj_list.append(circle)
+        else:
+            print(thingName+" is unknown !!")
 

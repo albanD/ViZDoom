@@ -47,7 +47,9 @@ for i in range(episodes):
     print("Episode #" +str(i+1))
 
     game.new_episode()
+    tick = 0
     while not game.is_episode_finished():
+        tick += 1
 
         s = game.get_state()
         img = s.image_buffer
@@ -57,8 +59,9 @@ for i in range(episodes):
         a = game.get_last_action()
         r = game.get_last_reward()
 
-        cheat.info_print(game)
-        cheat.plot_map(game)
+        #cheat.info_print(game)
+        if tick % 10 == 0:
+            cheat.plot_map(game)
         
         print("state #"+str(s.number))
         print("game variables: ", misc)

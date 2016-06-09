@@ -231,6 +231,7 @@ void ViZDoom_GameVarsTic(){
             vizdoomGameVars->MONSTERS_POS[monstersCount][1] = FIXED2FLOAT(t->Y());
 
             vizdoomGameVars->MONSTERS_TYPE[monstersCount] = t->GetSpecies().GetIndex();
+            strncpy(vizdoomGameVars->MONSTERS_NAME[monstersCount], t->GetSpecies().GetChars(), VIZDOOM_MAX_MONSTERS_INFO);
 
             ++monstersCount;
             t = t->snext;

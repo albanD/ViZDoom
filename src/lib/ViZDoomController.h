@@ -98,6 +98,7 @@ namespace vizdoom{
 
         #define VIZDOOM_MAX_WALLS 255
         #define VIZDOOM_MAX_MONSTERS 1023
+        #define VIZDOOM_MAX_MONSTERS_INFO 63
 
         struct GameVariablesStruct {
             unsigned int VERSION;
@@ -162,6 +163,7 @@ namespace vizdoom{
             int MONSTERS_COUNT;
             float MONSTERS_POS[VIZDOOM_MAX_MONSTERS][2];
             int MONSTERS_TYPE[VIZDOOM_MAX_MONSTERS];
+            char MONSTERS_NAME[VIZDOOM_MAX_MONSTERS][VIZDOOM_MAX_MONSTERS_INFO];
         };
 
         DoomController();
@@ -332,6 +334,7 @@ namespace vizdoom{
         float getMonsterPosX(int monsterId);
         float getMonsterPosY(int monsterId);
         int getMonsterType(int monsterId);
+        char* getMonsterName(int monsterId);
 
         // End of our custom stuff
 

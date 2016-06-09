@@ -488,6 +488,7 @@ namespace vizdoom {
         float getMonsterPosX(int monsterId);
         float getMonsterPosY(int monsterId);
         int getMonsterType(int monsterId);
+        const std::string getMonsterName(int monsterId);
 
     protected:
 

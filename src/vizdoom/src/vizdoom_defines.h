@@ -99,6 +99,7 @@ extern unsigned int vizdoomLastUpdate;
 
 #define VIZDOOM_MAX_WALLS 255
 #define VIZDOOM_MAX_MONSTERS 1023
+#define VIZDOOM_MAX_MONSTERS_INFO 63
 
 struct ViZDoomInputStruct{
     int BT[VIZDOOM_BT_SIZE];
@@ -183,6 +184,7 @@ struct ViZDoomGameVarsStruct{
     int MONSTERS_COUNT;
     float MONSTERS_POS[VIZDOOM_MAX_MONSTERS][2];
     int MONSTERS_TYPE[VIZDOOM_MAX_MONSTERS];
+    char MONSTERS_NAME[VIZDOOM_MAX_MONSTERS][VIZDOOM_MAX_MONSTERS_INFO];
 
 };
 

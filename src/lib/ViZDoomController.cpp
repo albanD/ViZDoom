@@ -804,6 +804,7 @@ namespace vizdoom {
     float DoomController::getMonsterPosX(int monsterId) { return this->gameVariables->MONSTERS_POS[monsterId][0]; }
     float DoomController::getMonsterPosY(int monsterId) { return this->gameVariables->MONSTERS_POS[monsterId][1]; }
     int DoomController::getMonsterType(int monsterId) { return this->gameVariables->MONSTERS_TYPE[monsterId]; }
+    char* DoomController::getMonsterName(int monsterId) { return this->gameVariables->MONSTERS_NAME[monsterId]; }
 
     // End of our custom stuff
 
