@@ -12,6 +12,8 @@ from __future__ import print_function
 from vizdoom import *
 from time import sleep
 
+import cheat
+
 game = DoomGame()
 
 # Choose scenario config file you wish to watch.
@@ -39,7 +41,7 @@ game.set_mode(Mode.SPECTATOR)
 
 game.init()
 
-episodes = 10
+episodes = 1
 print("")
 for i in range(episodes):
     print("Episode #" +str(i+1))
@@ -55,6 +57,9 @@ for i in range(episodes):
         a = game.get_last_action()
         r = game.get_last_reward()
 
+        cheat.info_print(game)
+        cheat.plot_map(game)
+        
         print("state #"+str(s.number))
         print("game variables: ", misc)
         print("action:", a)
