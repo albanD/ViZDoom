@@ -799,6 +799,7 @@ namespace vizdoom {
     float DoomController::getWallPosStartY(int wallId) { return this->gameVariables->WALLS_POS[wallId][0][1]; }
     float DoomController::getWallPosEndX(int wallId) { return this->gameVariables->WALLS_POS[wallId][1][0]; }
     float DoomController::getWallPosEndY(int wallId) { return this->gameVariables->WALLS_POS[wallId][1][1]; }
+    bool DoomController::getWallSeen(int wallId) { return this->gameVariables->WALLS_SEEN[wallId]; }
 
     int DoomController::getMonsterCount() { return this->gameVariables->MONSTERS_COUNT; }
     float DoomController::getMonsterPosX(int monsterId) { return this->gameVariables->MONSTERS_POS[monsterId][0]; }

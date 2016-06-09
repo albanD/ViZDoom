@@ -37,6 +37,7 @@
 #include "r_state.h"
 #include "m_fixed.h"
 #include "actor.h"
+#include "doomdata.h"
 
 // End of new includes
 
@@ -220,6 +221,8 @@ void ViZDoom_GameVarsTic(){
         vizdoomGameVars->WALLS_POS[i][0][1] = FIXED2FLOAT(lines[i].v1->y);
         vizdoomGameVars->WALLS_POS[i][1][0] = FIXED2FLOAT(lines[i].v2->x);
         vizdoomGameVars->WALLS_POS[i][1][1] = FIXED2FLOAT(lines[i].v2->y);
+
+        vizdoomGameVars->WALLS_SEEN[i] = bool(lines[i].flags & ML_MAPPED);
     }
 
     int monstersCount = 0;

@@ -346,6 +346,9 @@ namespace vizdoom {
     float DoomGame::getWallPosEndY(int wallId){
         return this->doomController->getWallPosEndY(wallId);
     }
+    bool DoomGame::getWallSeen(int wallId){
+        return this->doomController->getWallSeen(wallId);
+    }
 
     int DoomGame::getMonsterCount(){
         return this->doomController->getMonsterCount();

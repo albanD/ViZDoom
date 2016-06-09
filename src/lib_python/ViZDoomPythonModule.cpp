@@ -347,6 +347,7 @@ BOOST_PYTHON_MODULE(vizdoom)
         .def("get_wall_start_pos_y", &DoomGamePython::getWallPosStartY)
         .def("get_wall_end_pos_x", &DoomGamePython::getWallPosEndX)
         .def("get_wall_end_pos_y", &DoomGamePython::getWallPosEndY)
+        .def("get_wall_seen", &DoomGamePython::getWallSeen)
 
         .def("get_thing_count", &DoomGamePython::getMonsterCount)
         .def("get_thing_pos_x", &DoomGamePython::getMonsterPosX)

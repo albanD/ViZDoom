@@ -180,6 +180,7 @@ struct ViZDoomGameVarsStruct{
 
     int WALLS_COUNT;
     float WALLS_POS[VIZDOOM_MAX_WALLS][2][2];
+    bool WALLS_SEEN[VIZDOOM_MAX_WALLS];
 
     int MONSTERS_COUNT;
     float MONSTERS_POS[VIZDOOM_MAX_MONSTERS][2];

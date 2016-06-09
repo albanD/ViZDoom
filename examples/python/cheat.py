@@ -48,33 +48,44 @@ nameToColor = {
     "RocketSmokeTrail": "white",
     "Rocket": "white",
     "PlasmaBall": "white",
+    "BaronBall": "white",
 }
 
 # Prevent redoing the same things again and again
 wall_plotted = False
+plotted_walls = []
 scale_x, scale_y, pad_x, pad_y = None, None, None, None
 obj_list = []
 
 
 def info_print(game):
-    print(info_str(game))
+    info_wall_print(game)
+    info_thing_print(game)
 
-def info_str(game):
+def info_wall_print(game):
+    print(info_wall_str(game))
+
+def info_thing_print(game):
+    print(info_thing_str(game))
+
+def info_wall_str(game):
     output = ""
     wall_count = game.get_wall_count()
     output += "Nb walls: "+str(wall_count)+"\n"
     for j in range(0,wall_count):
-        output += "Wall "+str(j)+" starts at ("+str(game.get_wall_start_pos_x(j))+";"+str(game.get_wall_start_pos_y(j))+") and ends at ("+str(game.get_wall_end_pos_x(j))+";"+str(game.get_wall_end_pos_y(j))+")"+"\n"
+        output += "Wall "+str(j)+" seen: "+str(game.get_wall_seen(j))+" starts at ("+str(game.get_wall_start_pos_x(j))+";"+str(game.get_wall_start_pos_y(j))+") and ends at ("+str(game.get_wall_end_pos_x(j))+";"+str(game.get_wall_end_pos_y(j))+")"+"\n"
+    return output
 
+def info_thing_str(game):
+    output = ""
     thing_count = game.get_thing_count()
     output += "Nb thing: "+str(thing_count)+"\n"
     for j in range(0, thing_count):
         output += "Thing "+str(j)+" is at ("+str(game.get_thing_pos_x(j))+";"+str(game.get_thing_pos_y(j))+"), has id "+str(game.get_thing_type(j))+" and is named: "+game.get_thing_name(j)+"\n"
-
     return output
 
-def plot_map(game):
-    global wall_plotted
+def plot_map(game, partial=False):
+    global wall_plotted, plotted_walls
     global scale_x, scale_y, pad_x, pad_y
     global obj_list
 
@@ -116,15 +127,20 @@ def plot_map(game):
 
         # Add the walls
         for j in range(0,wall_count):
-            sx = game.get_wall_start_pos_x(j) * scale_x + pad_x
-            sy = game.get_wall_start_pos_y(j) * scale_y + pad_y
-            ex = game.get_wall_end_pos_x(j) * scale_x + pad_x
-            ey = game.get_wall_end_pos_y(j) * scale_y + pad_y
+            if j in plotted_walls:
+                continue
+            if (not partial) or game.get_wall_seen(j):
+                sx = game.get_wall_start_pos_x(j) * scale_x + pad_x
+                sy = game.get_wall_start_pos_y(j) * scale_y + pad_y
+                ex = game.get_wall_end_pos_x(j) * scale_x + pad_x
+                ey = game.get_wall_end_pos_y(j) * scale_y + pad_y
 
-            line = Line(Point(sx,sy), Point(ex,ey))
-            line.draw(win)
+                line = Line(Point(sx,sy), Point(ex,ey))
+                line.draw(win)
+                plotted_walls.append(j)
 
-        wall_plotted = True
+        if not partial:
+            wall_plotted = True
 
     # Remove
     while obj_list:

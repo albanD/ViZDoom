@@ -59,9 +59,9 @@ for i in range(episodes):
         a = game.get_last_action()
         r = game.get_last_reward()
 
-        #cheat.info_print(game)
+        #cheat.info_wall_print(game)
         if tick % 10 == 0:
-            cheat.plot_map(game)
+            cheat.plot_map(game, True)
         
         print("state #"+str(s.number))
         print("game variables: ", misc)

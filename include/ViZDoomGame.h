@@ -483,6 +483,7 @@ namespace vizdoom {
         float getWallPosStartY(int wallId);
         float getWallPosEndX(int wallId);
         float getWallPosEndY(int wallId);
+        bool getWallSeen(int wallId);
 
         int getMonsterCount();
         float getMonsterPosX(int monsterId);
