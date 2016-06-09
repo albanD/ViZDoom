@@ -21,7 +21,6 @@ nameToColor = {
     "ClipBox": "red",
     "ShellBox": "red",
     "RocketBox": "red",
-    "ClipBox": "red",
     "CellPack": "red",
 
     "Chainsaw": "purple",
@@ -38,8 +37,6 @@ nameToColor = {
     "BaronOfHell": "saddle brown",
     "Demon": "saddle brown",
 
-
-    # Seems to be nowhere...
 
     # We don't want these
     "TeleportFog": "white",
@@ -84,7 +81,7 @@ def info_thing_str(game):
         output += "Thing "+str(j)+" is at ("+str(game.get_thing_pos_x(j))+";"+str(game.get_thing_pos_y(j))+"), has id "+str(game.get_thing_type(j))+" and is named: "+game.get_thing_name(j)+"\n"
     return output
 
-def plot_map(game, partial=False):
+def plot_map(game, partial_walls=False, only_visible_things=False):
     global wall_plotted, plotted_walls
     global scale_x, scale_y, pad_x, pad_y
     global obj_list
@@ -129,7 +126,7 @@ def plot_map(game, partial=False):
         for j in range(0,wall_count):
             if j in plotted_walls:
                 continue
-            if (not partial) or game.get_wall_seen(j):
+            if (not partial_walls) or game.get_wall_seen(j):
                 sx = game.get_wall_start_pos_x(j) * scale_x + pad_x
                 sy = game.get_wall_start_pos_y(j) * scale_y + pad_y
                 ex = game.get_wall_end_pos_x(j) * scale_x + pad_x
@@ -139,7 +136,7 @@ def plot_map(game, partial=False):
                 line.draw(win)
                 plotted_walls.append(j)
 
-        if not partial:
+        if not partial_walls:
             wall_plotted = True
 
     # Remove
@@ -150,6 +147,8 @@ def plot_map(game, partial=False):
     # Add the new things
     thing_count = game.get_thing_count()
     for j in range(0,thing_count):
+        if only_visible_things and not game.get_thing_is_visible(j):
+            continue
         thingName = game.get_thing_name(j)
         if thingName in nameToColor.keys():
             if nameToColor[thingName] == "white":

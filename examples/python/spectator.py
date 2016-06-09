@@ -21,8 +21,8 @@ game = DoomGame()
 # Multiple config files are ok but combining these ones doesn't make much sense.
 
 #game.load_config("../../examples/config/basic.cfg")
-#game.load_config("../../examples/config/deadly_corridor.cfg")
-game.load_config("../../examples/config/deathmatch.cfg")
+game.load_config("../../examples/config/deadly_corridor.cfg")
+#game.load_config("../../examples/config/deathmatch.cfg")
 #game.load_config("../../examples/config/defend_the_center.cfg")
 #game.load_config("../../examples/config/defend_the_line.cfg")
 #game.load_config("../../examples/config/health_gathering.cfg")
@@ -61,7 +61,7 @@ for i in range(episodes):
 
         #cheat.info_wall_print(game)
         if tick % 10 == 0:
-            cheat.plot_map(game, True)
+            cheat.plot_map(game, True, True)
         
         print("state #"+str(s.number))
         print("game variables: ", misc)

@@ -354,6 +354,7 @@ BOOST_PYTHON_MODULE(vizdoom)
         .def("get_thing_pos_y", &DoomGamePython::getMonsterPosY)
         .def("get_thing_type", &DoomGamePython::getMonsterType)
         .def("get_thing_name", &DoomGamePython::getMonsterName)
+        .def("get_thing_is_visible", &DoomGamePython::getMonsterIsVisible)
 
         // End of custom stuff
 

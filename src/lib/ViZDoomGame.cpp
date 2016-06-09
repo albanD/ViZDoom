@@ -365,6 +365,9 @@ namespace vizdoom {
     const std::string DoomGame::getMonsterName(int monsterId){
         return std::string(this->doomController->getMonsterName(monsterId));
     }
+    bool DoomGame::getMonsterIsVisible(int monsterId){
+        return this->doomController->getMonsterIsVisible(monsterId);
+    }
 
     // End of custom stuff
 

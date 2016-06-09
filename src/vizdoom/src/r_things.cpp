@@ -971,6 +971,9 @@ void R_ProjectSprite (AActor *thing, int fakeside, F3DFloor *fakefloor, F3DFloor
 	vis->heightsec = heightsec;
 	vis->sector = thing->Sector;
 
+	// albanD
+	thing->isVisible = 1;
+
 	vis->depth = tz;
 	vis->gx = fx;
 	vis->gy = fy;
@@ -2273,7 +2276,6 @@ void R_DrawMaskedSingle (bool renew)
 }
 
 void R_DrawHeightPlanes(fixed_t height); // kg3D - fake planes
-
 void R_DrawMasked (void)
 {
 	R_SortVisSprites (DrewAVoxel ? sv_compare2d : sv_compare, firstvissprite - vissprites);

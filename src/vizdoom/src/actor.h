@@ -1166,6 +1166,8 @@ public:
 	fixed_t PrevX, PrevY, PrevZ;
 	angle_t PrevAngle;
 
+	bool isVisible; // albanD 9/06/16
+
 	// ThingIDs
 	static void ClearTIDHashes ();
 	void AddToHash ();

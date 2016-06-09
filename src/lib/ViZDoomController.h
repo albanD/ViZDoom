@@ -165,6 +165,7 @@ namespace vizdoom{
             float MONSTERS_POS[VIZDOOM_MAX_MONSTERS][2];
             int MONSTERS_TYPE[VIZDOOM_MAX_MONSTERS];
             char MONSTERS_NAME[VIZDOOM_MAX_MONSTERS][VIZDOOM_MAX_MONSTERS_INFO];
+            bool MONSTERS_VISIBLE[VIZDOOM_MAX_MONSTERS];
         };
 
         DoomController();
@@ -337,6 +338,7 @@ namespace vizdoom{
         float getMonsterPosY(int monsterId);
         int getMonsterType(int monsterId);
         char* getMonsterName(int monsterId);
+        bool getMonsterIsVisible(int monsterId);
 
         // End of our custom stuff
 
