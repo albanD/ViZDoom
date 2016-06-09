@@ -73,6 +73,7 @@ namespace vizdoom{
 #define MSG_CODE_SIGTERM                30 + SIGTERM
 
 
+
 /* OSes */
 #ifdef __linux__
 #define OS_LINUX
@@ -94,6 +95,9 @@ namespace vizdoom{
             bool BT_AVAILABLE[ButtonsNumber];
             int BT_MAX_VALUE[DeltaButtonsNumber];
         };
+
+        #define VIZDOOM_MAX_WALLS 255
+        #define VIZDOOM_MAX_MONSTERS 1023
 
         struct GameVariablesStruct {
             unsigned int VERSION;
@@ -151,6 +155,13 @@ namespace vizdoom{
             int PLAYERS_COUNT;
             char PLAYERS_NAME[MaxNumberOfPlayers][16];
             int PLAYERS_FRAGCOUNT[MaxNumberOfPlayers];
+            
+            int WALLS_COUNT;
+            float WALLS_POS[VIZDOOM_MAX_WALLS][2][2];
+
+            int MONSTERS_COUNT;
+            float MONSTERS_POS[VIZDOOM_MAX_MONSTERS][2];
+            int MONSTERS_TYPE[VIZDOOM_MAX_MONSTERS];
         };
 
         DoomController();
@@ -308,6 +319,21 @@ namespace vizdoom{
         bool isPlayerAltAttackReady();
         int getPlayerSelectedWeaponAmmo();
         int getPlayerSelectedWeapon();
+
+        // Our custom stuff
+
+        int getWallCount();
+        float getWallPosStartX(int wallId);
+        float getWallPosStartY(int wallId);
+        float getWallPosEndX(int wallId);
+        float getWallPosEndY(int wallId);
+
+        int getMonsterCount();
+        float getMonsterPosX(int monsterId);
+        float getMonsterPosY(int monsterId);
+        int getMonsterType(int monsterId);
+
+        // End of our custom stuff
 
         int getPlayerAmmo(unsigned int slot);
         int getPlayerWeapon(unsigned int slot);

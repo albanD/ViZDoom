@@ -792,6 +792,21 @@ namespace vizdoom {
     int DoomController::getPlayerSelectedWeaponAmmo() { return this->gameVariables->PLAYER_SELECTED_WEAPON_AMMO; }
     int DoomController::getPlayerSelectedWeapon() { return this->gameVariables->PLAYER_SELECTED_WEAPON; }
 
+    // Our custom stuff
+
+    int DoomController::getWallCount() { return this->gameVariables->WALLS_COUNT; }
+    float DoomController::getWallPosStartX(int wallId) { return this->gameVariables->WALLS_POS[wallId][0][0]; }
+    float DoomController::getWallPosStartY(int wallId) { return this->gameVariables->WALLS_POS[wallId][0][1]; }
+    float DoomController::getWallPosEndX(int wallId) { return this->gameVariables->WALLS_POS[wallId][1][0]; }
+    float DoomController::getWallPosEndY(int wallId) { return this->gameVariables->WALLS_POS[wallId][1][1]; }
+
+    int DoomController::getMonsterCount() { return this->gameVariables->MONSTERS_COUNT; }
+    float DoomController::getMonsterPosX(int monsterId) { return this->gameVariables->MONSTERS_POS[monsterId][0]; }
+    float DoomController::getMonsterPosY(int monsterId) { return this->gameVariables->MONSTERS_POS[monsterId][1]; }
+    int DoomController::getMonsterType(int monsterId) { return this->gameVariables->MONSTERS_TYPE[monsterId]; }
+
+    // End of our custom stuff
+
     int DoomController::getPlayerAmmo(unsigned int slot) {
         return slot < SlotsNumber ? this->gameVariables->PLAYER_AMMO[slot] : 0;
     }

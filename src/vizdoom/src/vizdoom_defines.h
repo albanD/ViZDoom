@@ -97,6 +97,9 @@ extern unsigned int vizdoomLastUpdate;
 #define VIZDOOM_MAX_PLAYER_NAME_LEN 16 //MAXPLAYERNAME+1 //(15 + 1 = 16)
 #define VIZDOOM_MAX_LABELS 255
 
+#define VIZDOOM_MAX_WALLS 255
+#define VIZDOOM_MAX_MONSTERS 1023
+
 struct ViZDoomInputStruct{
     int BT[VIZDOOM_BT_SIZE];
     bool BT_AVAILABLE[VIZDOOM_BT_SIZE];
@@ -173,6 +176,13 @@ struct ViZDoomGameVarsStruct{
     //int LABELS_COLOR[VIZDOOM_MAX_LABELS]
     //char int LABELS_NAME[VIZDOOM_MAX_LABELS]
     //float LABELS_POSITION[VIZDOOM_MAX_LABELS][3]
+
+    int WALLS_COUNT;
+    float WALLS_POS[VIZDOOM_MAX_WALLS][2][2];
+
+    int MONSTERS_COUNT;
+    float MONSTERS_POS[VIZDOOM_MAX_MONSTERS][2];
+    int MONSTERS_TYPE[VIZDOOM_MAX_MONSTERS];
 
 };
 

@@ -341,6 +341,20 @@ BOOST_PYTHON_MODULE(vizdoom)
         .def("get_game_variable", &DoomGamePython::getGameVariable)
         .def("get_game_screen", &DoomGamePython::getGameScreen)
 
+        // Our custom stuff
+        .def("get_wall_count", &DoomGamePython::getWallCount)
+        .def("get_wall_start_pos_x", &DoomGamePython::getWallPosStartX)
+        .def("get_wall_start_pos_y", &DoomGamePython::getWallPosStartY)
+        .def("get_wall_end_pos_x", &DoomGamePython::getWallPosEndX)
+        .def("get_wall_end_pos_y", &DoomGamePython::getWallPosEndY)
+
+        .def("get_thing_count", &DoomGamePython::getMonsterCount)
+        .def("get_thing_pos_x", &DoomGamePython::getMonsterPosX)
+        .def("get_thing_pos_y", &DoomGamePython::getMonsterPosY)
+        .def("get_thing_type", &DoomGamePython::getMonsterType)
+
+        // End of custom stuff
+
         .def("get_living_reward", &DoomGamePython::getLivingReward)
         .def("set_living_reward", &DoomGamePython::setLivingReward)
 

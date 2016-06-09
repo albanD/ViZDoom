@@ -475,6 +475,20 @@ namespace vizdoom {
          */
         uint8_t * const getGameScreen();
 
+        /*
+         * Returns our custom info.
+         */
+        int getWallCount();
+        float getWallPosStartX(int wallId);
+        float getWallPosStartY(int wallId);
+        float getWallPosEndX(int wallId);
+        float getWallPosEndY(int wallId);
+
+        int getMonsterCount();
+        float getMonsterPosX(int monsterId);
+        float getMonsterPosY(int monsterId);
+        int getMonsterType(int monsterId);
+
     protected:
 
         DoomController *doomController;

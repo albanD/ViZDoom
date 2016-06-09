@@ -329,6 +329,39 @@ namespace vizdoom {
         return this->doomController->getScreen();
     }
 
+    // Our custom stuff
+
+    int DoomGame::getWallCount(){
+        return this->doomController->getWallCount();
+    }
+    float DoomGame::getWallPosStartX(int wallId){
+        return this->doomController->getWallPosStartX(wallId);
+    }
+    float DoomGame::getWallPosStartY(int wallId){
+        return this->doomController->getWallPosStartY(wallId);
+    }
+    float DoomGame::getWallPosEndX(int wallId){
+        return this->doomController->getWallPosEndX(wallId);
+    }
+    float DoomGame::getWallPosEndY(int wallId){
+        return this->doomController->getWallPosEndY(wallId);
+    }
+
+    int DoomGame::getMonsterCount(){
+        return this->doomController->getMonsterCount();
+    }
+    float DoomGame::getMonsterPosX(int monsterId){
+        return this->doomController->getMonsterPosX(monsterId);
+    }
+    float DoomGame::getMonsterPosY(int monsterId){
+        return this->doomController->getMonsterPosY(monsterId);
+    }
+    int DoomGame::getMonsterType(int monsterId){
+        return this->doomController->getMonsterType(monsterId);
+    }
+
+    // End of custom stuff
+
     Mode DoomGame::getMode(){ return this->mode; };
     void DoomGame::setMode(Mode mode){ if (!this->isRunning()) this->mode = mode; }
 

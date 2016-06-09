@@ -32,6 +32,14 @@
 #include "c_dispatch.h"
 #include "p_acs.h"
 
+// New includes
+
+#include "r_state.h"
+#include "m_fixed.h"
+#include "actor.h"
+
+// End of new includes
+
 EXTERN_CVAR (Int, vizdoom_screen_format)
 EXTERN_CVAR (Bool, vizdoom_loop_map)
 
@@ -205,6 +213,31 @@ void ViZDoom_GameVarsTic(){
             vizdoomGameVars->PLAYERS_FRAGCOUNT[i] = players[i].fragcount;
         }
     }
+
+    vizdoomGameVars->WALLS_COUNT = numlines;
+    for (int i=0; i<numlines; ++i) {
+        vizdoomGameVars->WALLS_POS[i][0][0] = FIXED2FLOAT(lines[i].v1->x);
+        vizdoomGameVars->WALLS_POS[i][0][1] = FIXED2FLOAT(lines[i].v1->y);
+        vizdoomGameVars->WALLS_POS[i][1][0] = FIXED2FLOAT(lines[i].v2->x);
+        vizdoomGameVars->WALLS_POS[i][1][1] = FIXED2FLOAT(lines[i].v2->y);
+    }
+
+    int monstersCount = 0;
+    AActor* t;
+    for (int i=0; i<numsectors; ++i) {
+        t = sectors[i].thinglist;
+        while(t) {
+            vizdoomGameVars->MONSTERS_POS[monstersCount][0] = FIXED2FLOAT(t->X());
+            vizdoomGameVars->MONSTERS_POS[monstersCount][1] = FIXED2FLOAT(t->Y());
+
+            vizdoomGameVars->MONSTERS_TYPE[monstersCount] = t->GetSpecies().GetIndex();
+
+            ++monstersCount;
+            t = t->snext;
+        }
+    }
+    vizdoomGameVars->MONSTERS_COUNT = monstersCount;
+
 }
 
 void ViZDoom_GameVarsClose(){
