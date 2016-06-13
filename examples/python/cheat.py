@@ -36,16 +36,20 @@ nameToColor = {
     "ScriptedMarine": "saddle brown",
     "BaronOfHell": "saddle brown",
     "Demon": "saddle brown",
+    "DoomImp": "saddle brown",
 
+
+    # we may want these at some point
+    "Rocket": "white",
+    "PlasmaBall": "white",
+    "BaronBall": "white",
+    "DoomImpBall": "white",
 
     # We don't want these
     "TeleportFog": "white",
     "Blood": "white",
     "BulletPuff": "white",
     "RocketSmokeTrail": "white",
-    "Rocket": "white",
-    "PlasmaBall": "white",
-    "BaronBall": "white",
 }
 
 # Prevent redoing the same things again and again
@@ -147,9 +151,11 @@ def plot_map(game, partial_walls=False, only_visible_things=False):
     # Add the new things
     thing_count = game.get_thing_count()
     for j in range(0,thing_count):
-        if only_visible_things and not game.get_thing_is_visible(j):
-            continue
         thingName = game.get_thing_name(j)
+        if only_visible_things and not game.get_thing_is_visible(j):
+            # Special case for the Player that we should always display
+            if thingName != "DoomPlayer":
+                continue
         if thingName in nameToColor.keys():
             if nameToColor[thingName] == "white":
                 continue
