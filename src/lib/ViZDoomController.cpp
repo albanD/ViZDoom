@@ -27,6 +27,7 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/bind.hpp>
 #include <boost/chrono.hpp>
+#include <boost/filesystem.hpp>
 #include <boost/lexical_cast.hpp>
 #include <climits>
 #include <csignal>
@@ -73,8 +74,13 @@ namespace vizdoom {
 
         /* Settings */
         this->ticrate = DefaultTicrate;
-        this->exePath = "./vizdoom";
-        this->iwadPath = "./doom2.wad";
+        #ifdef OS_WIN
+            this->exePath = "vizdoom.exe";
+        #else
+            this->exePath = "vizdoom";
+        #endif
+
+        this->iwadPath = "doom2.wad";
         this->filePath = "";
         this->map = "map01";
         this->demoPath = "";
@@ -231,7 +237,7 @@ namespace vizdoom {
     void DoomController::tics(unsigned int tics, bool update){
 
         if(this->allowDoomInput && !this->runDoomAsync){
-            for(int i = 0; i < DeltaButtonsNumber; ++i){
+            for(int i = 0; i < DeltaButtonCount; ++i){
                 this->input->BT_MAX_VALUE[i] = tics * this->_input->BT_MAX_VALUE[i];
             }
         }
@@ -252,8 +258,8 @@ namespace vizdoom {
         }
 
         if(this->allowDoomInput && !this->runDoomAsync){
-            for(int i = BinaryButtonsNumber; i < ButtonsNumber; ++i){
-                this->input->BT_MAX_VALUE[i - BinaryButtonsNumber] = this->_input->BT_MAX_VALUE[i - BinaryButtonsNumber];
+            for(int i = BinaryButtonCount; i < ButtonCount; ++i){
+                this->input->BT_MAX_VALUE[i - BinaryButtonCount] = this->_input->BT_MAX_VALUE[i - BinaryButtonCount];
                 this->input->BT[i] = this->input->BT[i]/ticsMade;
             }
         }
@@ -292,7 +298,7 @@ namespace vizdoom {
     }
 
     void DoomController::sendCommand(std::string command) {
-        if(command.length() <= MQ_MAX_CMD_LEN) this->MQDoomSend(MSG_CODE_COMMAND, command.c_str());
+        if(this->doomRunning && this->MQDoom && command.length() <= MQ_MAX_CMD_LEN) this->MQDoomSend(MSG_CODE_COMMAND, command.c_str());
     }
 
     void DoomController::addCustomArg(std::string arg){
@@ -656,13 +662,13 @@ namespace vizdoom {
     }
 
     void DoomController::setButtonState(Button button, int state) {
-        if (button < ButtonsNumber && button >= 0 && this->doomRunning)
+        if (button < ButtonCount && button >= 0 && this->doomRunning)
             this->input->BT[button] = state;
 
     }
 
     void DoomController::toggleButtonState(Button button) {
-        if (button < ButtonsNumber && button >= 0 && this->doomRunning)
+        if (button < ButtonCount && button >= 0 && this->doomRunning)
             this->input->BT[button] = !this->input->BT[button];
 
     }
@@ -673,7 +679,7 @@ namespace vizdoom {
     }
 
     void DoomController::setButtonAvailable(Button button, bool allow) {
-        if (button < ButtonsNumber && button >= 0) {
+        if (button < ButtonCount && button >= 0) {
             if (this->doomRunning) this->input->BT_AVAILABLE[button] = allow;
             this->_input->BT_AVAILABLE[button] = allow;
         }
@@ -681,35 +687,35 @@ namespace vizdoom {
 
     void DoomController::resetButtons(){
         if (this->doomRunning)
-            for (int i = 0; i < ButtonsNumber; ++i)
+            for (int i = 0; i < ButtonCount; ++i)
                 this->input->BT[i] = 0;
     }
 
     void DoomController::disableAllButtons(){
-        for (int i = 0; i < ButtonsNumber; ++i){
+        for (int i = 0; i < ButtonCount; ++i){
             if (this->doomRunning) this->input->BT_AVAILABLE[i] = false;
             this->_input->BT_AVAILABLE[i] = false;
         }
     }
 
     void DoomController::availableAllButtons(){
-        for (int i = 0; i < ButtonsNumber; ++i){
+        for (int i = 0; i < ButtonCount; ++i){
             if (this->doomRunning) this->input->BT_AVAILABLE[i] = true;
             this->_input->BT_AVAILABLE[i] = true;
         }
     }
 
     void DoomController::setButtonMaxValue(Button button, int value){
-        if(button >= BinaryButtonsNumber){
-            if (this->doomRunning) this->input->BT_MAX_VALUE[button - BinaryButtonsNumber] = value;
-            this->_input->BT_MAX_VALUE[button - BinaryButtonsNumber] = value;
+        if(button >= BinaryButtonCount){
+            if (this->doomRunning) this->input->BT_MAX_VALUE[button - BinaryButtonCount] = value;
+            this->_input->BT_MAX_VALUE[button - BinaryButtonCount] = value;
         }
     }
 
     int DoomController::getButtonMaxValue(Button button){
-        if(button >= BinaryButtonsNumber){
-            if (this->doomRunning) return this->input->BT_MAX_VALUE[button - BinaryButtonsNumber];
-            else return this->_input->BT_MAX_VALUE[button - BinaryButtonsNumber];
+        if(button >= BinaryButtonCount){
+            if (this->doomRunning) return this->input->BT_MAX_VALUE[button - BinaryButtonCount];
+            else return this->_input->BT_MAX_VALUE[button - BinaryButtonCount];
         }
         else return 1;
     }
@@ -751,6 +757,10 @@ namespace vizdoom {
                 return this->gameVariables->PLAYER_SELECTED_WEAPON;
             case SELECTED_WEAPON_AMMO :
                 return this->gameVariables->PLAYER_SELECTED_WEAPON_AMMO;
+            case PLAYER_NUMBER:
+                return this->gameVariables->PLAYER_NUMBER;
+            case PLAYER_COUNT:
+                return this->gameVariables->PLAYER_COUNT;
         }
         if(var >= AMMO0 && var <= AMMO9){
             return this->gameVariables->PLAYER_AMMO[var - AMMO0];
@@ -760,6 +770,9 @@ namespace vizdoom {
         }
         else if(var >= USER1 && var <= USER30){
             return this->gameVariables->MAP_USER_VARS[var - USER1];
+        }
+        else if(var >= PLAYER1_FRAGCOUNT && var <= PLAYER8_FRAGCOUNT){
+            return this->gameVariables->PLAYERS_FRAGCOUNT[var - PLAYER1_FRAGCOUNT];
         }
         else return 0;
     }
@@ -811,11 +824,11 @@ namespace vizdoom {
     // End of our custom stuff
 
     int DoomController::getPlayerAmmo(unsigned int slot) {
-        return slot < SlotsNumber ? this->gameVariables->PLAYER_AMMO[slot] : 0;
+        return slot < SlotCount  ? this->gameVariables->PLAYER_AMMO[slot] : 0;
     }
 
     int DoomController::getPlayerWeapon(unsigned int slot) {
-        return slot < SlotsNumber ? this->gameVariables->PLAYER_WEAPON[slot] : 0;
+        return slot < SlotCount  ? this->gameVariables->PLAYER_WEAPON[slot] : 0;
     }
 
 
@@ -986,7 +999,7 @@ namespace vizdoom {
 
         this->doomArgs.push_back("-config");
         if (this->configPath.length() != 0) this->doomArgs.push_back(this->configPath);
-        else this->doomArgs.push_back("vizdoom.ini");
+        else this->doomArgs.push_back("_vizdoom.ini");
 
         if(this->seedDoomRng) {
             this->doomArgs.push_back("+rngseed");

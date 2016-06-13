@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 from __future__ import print_function
 from vizdoom import *
@@ -51,7 +51,7 @@ def player2():
     #game.load_config('../config/basic.cfg')
     # or
     game.load_config('../config/multi_duel.cfg')
-    game.add_game_args("-join 127.0.0.1 +sv_corpsequeuesize 0")
+    game.add_game_args("-join 127.0.0.1")
     game.add_game_args("+name Player2 +colorset 3")
 
     game.init()
