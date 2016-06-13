@@ -239,8 +239,11 @@ fixed_t 		sprtopscreen;
 
 bool			sprflipvert;
 
+bool 			didsmth;
+
 void R_DrawMaskedColumn (const BYTE *column, const FTexture::Span *span)
 {
+	didsmth = 0;
 	while (span->Length != 0)
 	{
 		const int length = span->Length;
@@ -312,6 +315,7 @@ void R_DrawMaskedColumn (const BYTE *column, const FTexture::Span *span)
 			dc_dest = ylookup[dc_yl] + dc_x + dc_destorg;
 			dc_count = dc_yh - dc_yl + 1;
 			colfunc ();
+			didsmth = 1;
 		}
 nextpost:
 		span++;
@@ -385,10 +389,12 @@ void R_DrawVisSprite (vissprite_t *vis)
 
 		if (dc_x < x2)
 		{
+			bool g_didsmth = 0;
 			while ((dc_x < stop4) && (dc_x & 3))
 			{
 				pixels = tex->GetColumn (frac >> FRACBITS, &spans);
 				R_DrawMaskedColumn (pixels, spans);
+				g_didsmth |= didsmth;
 				dc_x++;
 				frac += xiscale;
 			}
@@ -400,6 +406,7 @@ void R_DrawVisSprite (vissprite_t *vis)
 				{
 					pixels = tex->GetColumn (frac >> FRACBITS, &spans);
 					R_DrawMaskedColumnHoriz (pixels, spans);
+					g_didsmth |= didsmth;
 					dc_x++;
 					frac += xiscale;
 				}
@@ -419,8 +426,13 @@ void R_DrawVisSprite (vissprite_t *vis)
 			{
 				pixels = tex->GetColumn (frac >> FRACBITS, &spans);
 				R_DrawMaskedColumn (pixels, spans);
+				g_didsmth |= didsmth;
 				dc_x++;
 				frac += xiscale;
+			}
+
+			if (vis->thing && !g_didsmth ) {
+				vis->thing->isVisible = 0;
 			}
 		}
 	}
@@ -972,6 +984,7 @@ void R_ProjectSprite (AActor *thing, int fakeside, F3DFloor *fakefloor, F3DFloor
 	vis->sector = thing->Sector;
 
 	// albanD
+	vis->thing = thing;
 	thing->isVisible = 1;
 
 	vis->depth = tz;

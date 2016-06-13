@@ -80,6 +80,9 @@ struct vissprite_t
 	short 			renderflags;
 	DWORD			Translation;	// [RH] for color translation
 	visstyle_t		Style;
+
+	AActor* thing; // albanD
+	
 };
 
 struct particle_t;
@@ -103,6 +106,7 @@ extern short*			mceilingclip;
 extern fixed_t			spryscale;
 extern fixed_t			sprtopscreen;
 extern bool				sprflipvert;
+extern bool				didsmth;
 
 extern fixed_t			pspritexscale;
 extern fixed_t			pspriteyscale;

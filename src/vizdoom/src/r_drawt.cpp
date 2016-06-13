@@ -1146,6 +1146,7 @@ void R_FillColumnHorizP (void)
 
 void R_DrawMaskedColumnHoriz (const BYTE *column, const FTexture::Span *span)
 {
+	didsmth = 0;
 	while (span->Length != 0)
 	{
 		const int length = span->Length;
@@ -1217,6 +1218,7 @@ void R_DrawMaskedColumnHoriz (const BYTE *column, const FTexture::Span *span)
 			dc_dest = ylookup[dc_yl] + dc_x + dc_destorg;
 			dc_count = dc_yh - dc_yl + 1;
 			hcolfunc_pre ();
+			didsmth = 1;
 		}
 nextpost:
 		span++;
