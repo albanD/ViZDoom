@@ -479,6 +479,11 @@ namespace vizdoom {
         /*
          * Returns our custom info.
          */
+        int getHeatMapsChannels();
+        int getHeatMapsHeight();
+        int getHeatMapsWidth();
+        uint8_t * const getHeatMapsRaw();
+        
         int getWallCount();
         float getWallPosStartX(int wallId);
         float getWallPosStartY(int wallId);

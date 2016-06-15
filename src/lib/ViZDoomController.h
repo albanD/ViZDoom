@@ -97,8 +97,8 @@ namespace vizdoom{
         };
 
         #define VIZDOOM_MAX_WALLS 255
-        #define VIZDOOM_MAX_MONSTERS 1023
-        #define VIZDOOM_MAX_MONSTERS_INFO 63
+        #define VIZDOOM_MAX_THINGS 1023
+        #define VIZDOOM_MAX_THINGS_INFO 63
 
         struct GameVariablesStruct {
             unsigned int VERSION;
@@ -163,11 +163,11 @@ namespace vizdoom{
             float WALLS_POS[VIZDOOM_MAX_WALLS][2][2];
             bool WALLS_SEEN[VIZDOOM_MAX_WALLS];
 
-            int MONSTERS_COUNT;
-            float MONSTERS_POS[VIZDOOM_MAX_MONSTERS][2];
-            int MONSTERS_TYPE[VIZDOOM_MAX_MONSTERS];
-            char MONSTERS_NAME[VIZDOOM_MAX_MONSTERS][VIZDOOM_MAX_MONSTERS_INFO];
-            bool MONSTERS_VISIBLE[VIZDOOM_MAX_MONSTERS];
+            int THINGS_COUNT;
+            float THINGS_POS[VIZDOOM_MAX_THINGS][2];
+            int THINGS_TYPE[VIZDOOM_MAX_THINGS];
+            char THINGS_NAME[VIZDOOM_MAX_THINGS][VIZDOOM_MAX_THINGS_INFO];
+            bool THINGS_VISIBLE[VIZDOOM_MAX_THINGS];
         };
 
         DoomController();
@@ -328,6 +328,11 @@ namespace vizdoom{
 
         // Our custom stuff
 
+        int getHeatMapsChannels();
+        int getHeatMapsHeight();
+        int getHeatMapsWidth();
+        uint8_t * const getHeatMaps();
+
         int getWallCount();
         float getWallPosStartX(int wallId);
         float getWallPosStartY(int wallId);
@@ -469,6 +474,13 @@ namespace vizdoom{
 
         std::vector <std::string> customArgs;
         std::vector <std::string> doomArgs;
+
+        // Custom stuff
+        unsigned int heatMapsWidth, heatMapsHeight, heatMapsChannels;
+        int prevPlayerX, prevPlayerY;
+        float scaleX, scaleY, padX, padY;
+        uint8_t *heatMapsBuffer = NULL;
+        std::vector<bool> plottedWalls;
 
     };
 

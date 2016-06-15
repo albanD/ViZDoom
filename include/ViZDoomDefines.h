@@ -36,6 +36,7 @@ namespace vizdoom{
         unsigned int number;
         std::vector<int> gameVariables;
         uint8_t * imageBuffer;
+        uint8_t * heatmaps;
     };
 
     enum Mode {

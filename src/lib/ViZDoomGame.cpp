@@ -231,6 +231,9 @@ namespace vizdoom {
             /* Update float rgb image */
             this->state.imageBuffer = this->doomController->getScreen();
 
+            /* Update the heatmaps */
+            this->state.heatmaps = this->doomController->getHeatMaps();
+
             //Update last action
             for (unsigned int i = 0; i < this->availableButtons.size(); ++i) {
                 this->lastAction[i] = this->doomController->getButtonState(this->availableButtons[i]);
@@ -335,6 +338,12 @@ namespace vizdoom {
     }
 
     // Our custom stuff
+    int DoomGame::getHeatMapsChannels() { return this->doomController->getHeatMapsChannels(); }
+    int DoomGame::getHeatMapsHeight() { return this->doomController->getHeatMapsHeight(); }
+    int DoomGame::getHeatMapsWidth() { return this->doomController->getHeatMapsWidth(); }
+    uint8_t * const DoomGame::getHeatMapsRaw(){
+        return this->state.heatmaps;
+    }
 
     int DoomGame::getWallCount(){
         return this->doomController->getWallCount();
@@ -1069,7 +1078,6 @@ namespace vizdoom {
 
         return success;
     }
-
 }
 
 

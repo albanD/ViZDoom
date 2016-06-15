@@ -79,6 +79,9 @@ namespace vizdoom {
         void addGameArgs(bpy::str const &pyArgs);
         void sendGameCommand(bpy::str const &pyCmd);
 
+        // Custom stuff
+        PyObject* getHeatMaps();
+
     private:
         npy_intp imageShape[3];
         static std::vector<int> pyListToIntVector(bpy::list const &action);

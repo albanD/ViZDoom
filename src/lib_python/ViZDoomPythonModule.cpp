@@ -352,6 +352,8 @@ BOOST_PYTHON_MODULE(vizdoom)
         .def("get_game_screen", &DoomGamePython::getGameScreen)
 
         // Our custom stuff
+        .def("get_heat_maps", &DoomGamePython::getHeatMaps)
+
         .def("get_wall_count", &DoomGamePython::getWallCount)
         .def("get_wall_start_pos_x", &DoomGamePython::getWallPosStartX)
         .def("get_wall_start_pos_y", &DoomGamePython::getWallPosStartY)
