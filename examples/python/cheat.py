@@ -1,10 +1,5 @@
 from graphics import *
 
-# Map init
-screen_width, screen_height = 512.0, 512.0
-screen_border_x, screen_border_y = 20.0,20.0
-win = GraphWin("Map", screen_width, screen_height)
-
 # Id to color mapping
 nameToColor = {
     "DoomPlayer": "blue",
@@ -27,7 +22,6 @@ nameToColor = {
     "RocketLauncher": "purple",
     "SuperShotgun": "purple",
     "PlasmaRifle": "purple",
-    "PlasmaRifle": "purple",
     "Chaingun": "purple",
 
     "Zombieman": "saddle brown",
@@ -37,6 +31,7 @@ nameToColor = {
     "BaronOfHell": "saddle brown",
     "Demon": "saddle brown",
     "DoomImp": "saddle brown",
+    "Cacodemon": "saddle brown",
 
 
     # we may want these at some point
@@ -52,7 +47,12 @@ nameToColor = {
     "RocketSmokeTrail": "white",
 }
 
+# Map init
+screen_width, screen_height = 512.0, 512.0
+screen_border_x, screen_border_y = 20.0,20.0
+
 # Prevent redoing the same things again and again
+win = None
 wall_plotted = False
 plotted_walls = []
 scale_x, scale_y, pad_x, pad_y = None, None, None, None
@@ -89,6 +89,10 @@ def plot_map(game, partial_walls=False, only_visible_things=False):
     global wall_plotted, plotted_walls
     global scale_x, scale_y, pad_x, pad_y
     global obj_list
+
+    global win
+    if not win:
+        win = GraphWin("Map", screen_width, screen_height)
 
     wall_count = game.get_wall_count()
 

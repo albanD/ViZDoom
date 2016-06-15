@@ -14,6 +14,7 @@ from time import sleep
 from vizdoom import *
 
 import cheat
+import cv2 # for heatmap debugging
 
 game = DoomGame()
 
@@ -60,9 +61,15 @@ for i in range(episodes):
         a = game.get_last_action()
         r = game.get_last_reward()
 
-        #cheat.info_wall_print(game)
-        if tick % 10 == 0:
-            cheat.plot_map(game, True, True)
+        # cheat.info_thing_print(game)
+        # if tick % 10 == 0:
+        #     cheat.plot_map(game, True, True)
+
+        heatmap = game.get_heat_maps()
+        print(heatmap.shape)
+        cv2.imshow('heatmap', heatmap[4])
+        cv2.waitKey(1)
+
         
         print("state #" + str(s.number))
         print("game variables: ", misc)
