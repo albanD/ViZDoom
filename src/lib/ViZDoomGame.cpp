@@ -363,6 +363,9 @@ namespace vizdoom {
     bool DoomGame::getWallSeen(int wallId){
         return this->doomController->getWallSeen(wallId);
     }
+    bool DoomGame::getWallNonBlocking(int wallId){
+        return this->doomController->getWallNonBlocking(wallId);
+    }
 
     int DoomGame::getThingCount(){
         return this->doomController->getThingCount();

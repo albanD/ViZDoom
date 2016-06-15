@@ -490,6 +490,7 @@ namespace vizdoom {
         float getWallPosEndX(int wallId);
         float getWallPosEndY(int wallId);
         bool getWallSeen(int wallId);
+        bool getWallNonBlocking(int wallId);
 
         int getThingCount();
         float getThingPosX(int thingId);

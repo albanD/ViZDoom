@@ -225,6 +225,13 @@ void ViZDoom_GameVarsTic(){
         vizdoomGameVars->WALLS_POS[i][1][0] = FIXED2FLOAT(lines[i].v2->x);
         vizdoomGameVars->WALLS_POS[i][1][1] = FIXED2FLOAT(lines[i].v2->y);
 
+        bool nonBlocking = 0;
+        if (lines[i].backsector && lines[i].frontsector) {
+            nonBlocking |= lines[i].backsector->floorplane != lines[i].frontsector->floorplane;
+            nonBlocking |= lines[i].backsector->ceilingplane != lines[i].frontsector->ceilingplane;
+        }
+        vizdoomGameVars->WALLS_NON_BLOCKING[i] = nonBlocking;
+
         vizdoomGameVars->WALLS_SEEN[i] = bool(lines[i].flags & ML_MAPPED);
     }
 

@@ -162,6 +162,7 @@ namespace vizdoom{
             int WALLS_COUNT;
             float WALLS_POS[VIZDOOM_MAX_WALLS][2][2];
             bool WALLS_SEEN[VIZDOOM_MAX_WALLS];
+            bool WALLS_NON_BLOCKING[VIZDOOM_MAX_WALLS];
 
             int THINGS_COUNT;
             float THINGS_POS[VIZDOOM_MAX_THINGS][2];
@@ -340,6 +341,7 @@ namespace vizdoom{
         float getWallPosEndX(int wallId);
         float getWallPosEndY(int wallId);
         bool getWallSeen(int wallId);
+        bool getWallNonBlocking(int wallId);
 
         int getThingCount();
         float getThingPosX(int monsterId);

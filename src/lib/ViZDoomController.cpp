@@ -823,6 +823,7 @@ namespace vizdoom {
     float DoomController::getWallPosEndX(int wallId) { return this->gameVariables->WALLS_POS[wallId][1][0]; }
     float DoomController::getWallPosEndY(int wallId) { return this->gameVariables->WALLS_POS[wallId][1][1]; }
     bool DoomController::getWallSeen(int wallId) { return this->gameVariables->WALLS_SEEN[wallId]; }
+    bool DoomController::getWallNonBlocking(int wallId) { return this->gameVariables->WALLS_NON_BLOCKING[wallId]; }
 
     int DoomController::getThingCount() { return this->gameVariables->THINGS_COUNT; }
     float DoomController::getThingPosX(int thingId) { return this->gameVariables->THINGS_POS[thingId][0]; }
@@ -866,7 +867,7 @@ namespace vizdoom {
             // Keep 4 pixels all around
             this->scaleX = - float(this->heatMapsWidth-4) / float(maxX - minX);
             this->scaleY = float(this->heatMapsHeight-4) / float(maxY - minY);
-            this->padX = 2 - minX * this->scaleX + this->heatMapsWidth;
+            this->padX = -2 - minX * this->scaleX + this->heatMapsWidth;
             this->padY = 2 - minY * this->scaleY;
         }
         int mapSize = this->heatMapsWidth * this->heatMapsHeight;
@@ -877,7 +878,7 @@ namespace vizdoom {
         // Update walls
         for (int i=0; i<this->gameVariables->WALLS_COUNT; ++i) {
             // Add the missing ones
-            if (this->gameVariables->WALLS_SEEN[i] && !this->plottedWalls[i]) {
+            if (!this->gameVariables->WALLS_NON_BLOCKING[i] && this->gameVariables->WALLS_SEEN[i] && !this->plottedWalls[i]) {
                 int fromX = this->gameVariables->WALLS_POS[i][0][0] * this->scaleX + this->padX;
                 int fromY = this->gameVariables->WALLS_POS[i][0][1] * this->scaleY + this->padY;
                 int toX = this->gameVariables->WALLS_POS[i][1][0] * this->scaleX + this->padX;
@@ -899,6 +900,7 @@ namespace vizdoom {
                     }
                     for (int X = from; X <= to; ++X) {
                         Y += slope;
+                        Y = std::min(std::max(Y, 0.f), (float)this->heatMapsHeight);
                         this->heatMapsBuffer[int(Y)*mapWidth + X] = 255;
                     }
                 }
@@ -917,6 +919,7 @@ namespace vizdoom {
                     }
                     for (int Y = from; Y <= to; ++Y) {
                         X += slope;
+                        X = std::min(std::max(X, 0.f), (float)this->heatMapsWidth);
                         this->heatMapsBuffer[Y*mapWidth + int(X)] = 255;
                     }
                 }
