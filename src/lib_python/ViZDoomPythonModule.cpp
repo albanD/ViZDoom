@@ -361,12 +361,13 @@ BOOST_PYTHON_MODULE(vizdoom)
         .def("get_wall_end_pos_y", &DoomGamePython::getWallPosEndY)
         .def("get_wall_seen", &DoomGamePython::getWallSeen)
 
-        .def("get_thing_count", &DoomGamePython::getMonsterCount)
-        .def("get_thing_pos_x", &DoomGamePython::getMonsterPosX)
-        .def("get_thing_pos_y", &DoomGamePython::getMonsterPosY)
-        .def("get_thing_type", &DoomGamePython::getMonsterType)
-        .def("get_thing_name", &DoomGamePython::getMonsterName)
-        .def("get_thing_is_visible", &DoomGamePython::getMonsterIsVisible)
+        .def("get_thing_count", &DoomGamePython::getThingCount)
+        .def("get_thing_pos_x", &DoomGamePython::getThingPosX)
+        .def("get_thing_pos_y", &DoomGamePython::getThingPosY)
+        .def("get_thing_angle", &DoomGamePython::getThingAngle)
+        .def("get_thing_type", &DoomGamePython::getThingType)
+        .def("get_thing_name", &DoomGamePython::getThingName)
+        .def("get_thing_is_visible", &DoomGamePython::getThingIsVisible)
 
         // End of custom stuff
 

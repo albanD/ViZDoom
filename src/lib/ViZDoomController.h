@@ -165,6 +165,7 @@ namespace vizdoom{
 
             int THINGS_COUNT;
             float THINGS_POS[VIZDOOM_MAX_THINGS][2];
+            float THINGS_ANGLE[VIZDOOM_MAX_THINGS];
             int THINGS_TYPE[VIZDOOM_MAX_THINGS];
             char THINGS_NAME[VIZDOOM_MAX_THINGS][VIZDOOM_MAX_THINGS_INFO];
             bool THINGS_VISIBLE[VIZDOOM_MAX_THINGS];
@@ -340,12 +341,13 @@ namespace vizdoom{
         float getWallPosEndY(int wallId);
         bool getWallSeen(int wallId);
 
-        int getMonsterCount();
-        float getMonsterPosX(int monsterId);
-        float getMonsterPosY(int monsterId);
-        int getMonsterType(int monsterId);
-        char* getMonsterName(int monsterId);
-        bool getMonsterIsVisible(int monsterId);
+        int getThingCount();
+        float getThingPosX(int monsterId);
+        float getThingPosY(int monsterId);
+        float getThingAngle(int thingId);
+        int getThingType(int monsterId);
+        char* getThingName(int monsterId);
+        bool getThingIsVisible(int monsterId);
 
         // End of our custom stuff
 
@@ -477,7 +479,6 @@ namespace vizdoom{
 
         // Custom stuff
         unsigned int heatMapsWidth, heatMapsHeight, heatMapsChannels;
-        int prevPlayerX, prevPlayerY;
         float scaleX, scaleY, padX, padY;
         uint8_t *heatMapsBuffer = NULL;
         std::vector<bool> plottedWalls;

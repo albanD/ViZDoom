@@ -364,23 +364,26 @@ namespace vizdoom {
         return this->doomController->getWallSeen(wallId);
     }
 
-    int DoomGame::getMonsterCount(){
-        return this->doomController->getMonsterCount();
+    int DoomGame::getThingCount(){
+        return this->doomController->getThingCount();
     }
-    float DoomGame::getMonsterPosX(int monsterId){
-        return this->doomController->getMonsterPosX(monsterId);
+    float DoomGame::getThingPosX(int thingId){
+        return this->doomController->getThingPosX(thingId);
     }
-    float DoomGame::getMonsterPosY(int monsterId){
-        return this->doomController->getMonsterPosY(monsterId);
+    float DoomGame::getThingPosY(int thingId){
+        return this->doomController->getThingPosY(thingId);
     }
-    int DoomGame::getMonsterType(int monsterId){
-        return this->doomController->getMonsterType(monsterId);
+    float DoomGame::getThingAngle(int thingId){
+        return this->doomController->getThingAngle(thingId);
     }
-    const std::string DoomGame::getMonsterName(int monsterId){
-        return std::string(this->doomController->getMonsterName(monsterId));
+    int DoomGame::getThingType(int thingId){
+        return this->doomController->getThingType(thingId);
     }
-    bool DoomGame::getMonsterIsVisible(int monsterId){
-        return this->doomController->getMonsterIsVisible(monsterId);
+    const std::string DoomGame::getThingName(int thingId){
+        return std::string(this->doomController->getThingName(thingId));
+    }
+    bool DoomGame::getThingIsVisible(int thingId){
+        return this->doomController->getThingIsVisible(thingId);
     }
 
     // End of custom stuff

@@ -228,25 +228,27 @@ void ViZDoom_GameVarsTic(){
         vizdoomGameVars->WALLS_SEEN[i] = bool(lines[i].flags & ML_MAPPED);
     }
 
-    int monstersCount = 0;
+    int thingsCount = 0;
     AActor* t;
     for (int i=0; i<numsectors; ++i) {
         t = sectors[i].thinglist;
         while(t) {
-            vizdoomGameVars->MONSTERS_POS[monstersCount][0] = FIXED2FLOAT(t->X());
-            vizdoomGameVars->MONSTERS_POS[monstersCount][1] = FIXED2FLOAT(t->Y());
+            vizdoomGameVars->THINGS_POS[thingsCount][0] = FIXED2FLOAT(t->X());
+            vizdoomGameVars->THINGS_POS[thingsCount][1] = FIXED2FLOAT(t->Y());
 
-            vizdoomGameVars->MONSTERS_TYPE[monstersCount] = t->GetSpecies().GetIndex();
-            strncpy(vizdoomGameVars->MONSTERS_NAME[monstersCount], t->GetSpecies().GetChars(), VIZDOOM_MAX_MONSTERS_INFO);
+            vizdoomGameVars->THINGS_ANGLE[thingsCount] = float((double)t->angle / (double)(1u << 31) * (double)180.0);
 
-            vizdoomGameVars->MONSTERS_VISIBLE[monstersCount] = t->isVisible;
+            vizdoomGameVars->THINGS_TYPE[thingsCount] = t->GetSpecies().GetIndex();
+            strncpy(vizdoomGameVars->THINGS_NAME[thingsCount], t->GetSpecies().GetChars(), VIZDOOM_MAX_THINGS_INFO);
+
+            vizdoomGameVars->THINGS_VISIBLE[thingsCount] = t->isVisible;
             t->isVisible = 0;
 
-            ++monstersCount;
+            ++thingsCount;
             t = t->snext;
         }
     }
-    vizdoomGameVars->MONSTERS_COUNT = monstersCount;
+    vizdoomGameVars->THINGS_COUNT = thingsCount;
 
 }
 

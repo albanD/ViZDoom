@@ -483,7 +483,7 @@ namespace vizdoom {
         int getHeatMapsHeight();
         int getHeatMapsWidth();
         uint8_t * const getHeatMapsRaw();
-        
+
         int getWallCount();
         float getWallPosStartX(int wallId);
         float getWallPosStartY(int wallId);
@@ -491,12 +491,13 @@ namespace vizdoom {
         float getWallPosEndY(int wallId);
         bool getWallSeen(int wallId);
 
-        int getMonsterCount();
-        float getMonsterPosX(int monsterId);
-        float getMonsterPosY(int monsterId);
-        int getMonsterType(int monsterId);
-        const std::string getMonsterName(int monsterId);
-        bool getMonsterIsVisible(int monsterId);
+        int getThingCount();
+        float getThingPosX(int thingId);
+        float getThingPosY(int thingId);
+        float getThingAngle(int thingId);
+        int getThingType(int thingId);
+        const std::string getThingName(int thingId);
+        bool getThingIsVisible(int thingId);
 
     protected:
 

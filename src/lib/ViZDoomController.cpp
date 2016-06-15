@@ -824,12 +824,13 @@ namespace vizdoom {
     float DoomController::getWallPosEndY(int wallId) { return this->gameVariables->WALLS_POS[wallId][1][1]; }
     bool DoomController::getWallSeen(int wallId) { return this->gameVariables->WALLS_SEEN[wallId]; }
 
-    int DoomController::getMonsterCount() { return this->gameVariables->THINGS_COUNT; }
-    float DoomController::getMonsterPosX(int monsterId) { return this->gameVariables->THINGS_POS[monsterId][0]; }
-    float DoomController::getMonsterPosY(int monsterId) { return this->gameVariables->THINGS_POS[monsterId][1]; }
-    int DoomController::getMonsterType(int monsterId) { return this->gameVariables->THINGS_TYPE[monsterId]; }
-    char* DoomController::getMonsterName(int monsterId) { return this->gameVariables->THINGS_NAME[monsterId]; }
-    bool DoomController::getMonsterIsVisible(int monsterId) { return this->gameVariables->THINGS_VISIBLE[monsterId]; }
+    int DoomController::getThingCount() { return this->gameVariables->THINGS_COUNT; }
+    float DoomController::getThingPosX(int thingId) { return this->gameVariables->THINGS_POS[thingId][0]; }
+    float DoomController::getThingPosY(int thingId) { return this->gameVariables->THINGS_POS[thingId][1]; }
+    float DoomController::getThingAngle(int thingId) { return this->gameVariables->THINGS_ANGLE[thingId]; }
+    int DoomController::getThingType(int thingId) { return this->gameVariables->THINGS_TYPE[thingId]; }
+    char* DoomController::getThingName(int thingId) { return this->gameVariables->THINGS_NAME[thingId]; }
+    bool DoomController::getThingIsVisible(int thingId) { return this->gameVariables->THINGS_VISIBLE[thingId]; }
 
     int DoomController::getHeatMapsChannels() { return this->heatMapsChannels; }
     int DoomController::getHeatMapsHeight() { return this->heatMapsHeight; }
@@ -849,7 +850,6 @@ namespace vizdoom {
             // Initialize map
             int heatMapsSize = this->heatMapsWidth*this->heatMapsHeight*this->heatMapsChannels;
             this->heatMapsBuffer = (uint8_t*) malloc(heatMapsSize*sizeof(float));
-            printf("Initialize size: %d\n", heatMapsSize);
             memset(this->heatMapsBuffer, 0, heatMapsSize);
 
             // Initialize seen walls;
@@ -864,9 +864,9 @@ namespace vizdoom {
                 maxY = std::max(maxY, std::max(this->gameVariables->WALLS_POS[i][0][1], this->gameVariables->WALLS_POS[i][1][1]));
             }
             // Keep 4 pixels all around
-            this->scaleX = float(this->heatMapsWidth-4) / float(maxX - minX);
+            this->scaleX = - float(this->heatMapsWidth-4) / float(maxX - minX);
             this->scaleY = float(this->heatMapsHeight-4) / float(maxY - minY);
-            this->padX = 2 - minX * this->scaleX;
+            this->padX = 2 - minX * this->scaleX + this->heatMapsWidth;
             this->padY = 2 - minY * this->scaleY;
         }
         int mapSize = this->heatMapsWidth * this->heatMapsHeight;
@@ -882,10 +882,8 @@ namespace vizdoom {
                 int fromY = this->gameVariables->WALLS_POS[i][0][1] * this->scaleY + this->padY;
                 int toX = this->gameVariables->WALLS_POS[i][1][0] * this->scaleX + this->padX;
                 int toY = this->gameVariables->WALLS_POS[i][1][1] * this->scaleY + this->padY;
-                printf("%d %d %d %d\n", fromX, fromY, toX, toY);
 
                 float slope;
-
                 if (toX != fromX) {
                     slope = float(toY - fromY) / float(toX - fromX);
                     float Y;
@@ -926,36 +924,57 @@ namespace vizdoom {
             }
         }
 
+        // Set everything else to black
+        memset(this->heatMapsBuffer+mapSize, 0, 4*mapSize);
+
         // Update the player
-        if (this->prevPlayerX > 0 && this->prevPlayerY > 0) {
-            for (int x=-1; x < 2; ++x) {
-                for (int y=-1; y < 2; ++y) {
-                    this->heatMapsBuffer[mapSize + (this->prevPlayerY+y)*mapWidth + this->prevPlayerX+x] = 0;
-                }
-            }
-        }
-        int playerId = 0;
+        float playerAngle = 0;
+        int playerX, playerY;
         bool found = 0;
         for(int i=0; i<this->gameVariables->THINGS_COUNT; ++i) {
             if (this->gameVariables->THINGS_TYPE[i] == 76) {
-                this->prevPlayerX = this->gameVariables->THINGS_POS[i][0] * this->scaleX + this->padX;
-                this->prevPlayerY = this->gameVariables->THINGS_POS[i][1] * this->scaleY + this->padY;
+                playerX = this->gameVariables->THINGS_POS[i][0] * this->scaleX + this->padX;
+                playerY = this->gameVariables->THINGS_POS[i][1] * this->scaleY + this->padY;
+                playerAngle = this->gameVariables->THINGS_ANGLE[i];
                 found = 1;
                 break;
             }
         }
         if (found) {
-            for (int x=-1; x < 2; ++x) {
-                for (int y=-1; y < 2; ++y) {
-                    this->heatMapsBuffer[mapSize + (this->prevPlayerY+y)*mapWidth + this->prevPlayerX+x] = 255;
-                }
+            int centerValue = 255;
+            int arrowValue = 125;
+            this->heatMapsBuffer[mapSize + playerY*mapWidth + playerX] = centerValue;
+            playerAngle = int(360 - playerAngle + 180) % 360;
+            if (playerAngle < 22.5) {
+                this->heatMapsBuffer[mapSize + (playerY+0)*mapWidth + playerX+1] = arrowValue;
+                this->heatMapsBuffer[mapSize + (playerY+0)*mapWidth + playerX+2] = arrowValue;
+            } else if (playerAngle < 67.5) {
+                this->heatMapsBuffer[mapSize + (playerY+1)*mapWidth + playerX+1] = arrowValue;
+                this->heatMapsBuffer[mapSize + (playerY+2)*mapWidth + playerX+2] = arrowValue;
+            } else if (playerAngle < 112.5) {
+                this->heatMapsBuffer[mapSize + (playerY+1)*mapWidth + playerX+0] = arrowValue;
+                this->heatMapsBuffer[mapSize + (playerY+2)*mapWidth + playerX+0] = arrowValue;
+            } else if (playerAngle < 157.5) {
+                this->heatMapsBuffer[mapSize + (playerY+1)*mapWidth + playerX-1] = arrowValue;
+                this->heatMapsBuffer[mapSize + (playerY+2)*mapWidth + playerX-2] = arrowValue;
+            } else if (playerAngle < 202.5) {
+                this->heatMapsBuffer[mapSize + (playerY+0)*mapWidth + playerX-1] = arrowValue;
+                this->heatMapsBuffer[mapSize + (playerY+0)*mapWidth + playerX-2] = arrowValue;
+            } else if (playerAngle < 247.5) {
+                this->heatMapsBuffer[mapSize + (playerY-1)*mapWidth + playerX-1] = arrowValue;
+                this->heatMapsBuffer[mapSize + (playerY-2)*mapWidth + playerX-2] = arrowValue;
+            } else if (playerAngle < 292.5) {
+                this->heatMapsBuffer[mapSize + (playerY-1)*mapWidth + playerX+0] = arrowValue;
+                this->heatMapsBuffer[mapSize + (playerY-2)*mapWidth + playerX+0] = arrowValue;
+            } else if (playerAngle < 337.5) {
+                this->heatMapsBuffer[mapSize + (playerY-1)*mapWidth + playerX+1] = arrowValue;
+                this->heatMapsBuffer[mapSize + (playerY-2)*mapWidth + playerX+2] = arrowValue;
             }
         } else {
             printf("WARNING: Player not found on the map\n");
         }
 
         // Update the medkits, ammo/weapons and enemies
-        memset(this->heatMapsBuffer+2*mapSize, 0, 3*mapSize); // Set it black
         for(int i=0; i<this->gameVariables->THINGS_COUNT; ++i) {
             if (!this->gameVariables->THINGS_VISIBLE[i]) {
                 continue;

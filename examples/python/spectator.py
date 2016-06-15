@@ -67,7 +67,7 @@ for i in range(episodes):
 
         heatmap = game.get_heat_maps()
         print(heatmap.shape)
-        cv2.imshow('heatmap', heatmap[4])
+        cv2.imshow('heatmap', heatmap[1])
         cv2.waitKey(1)
 
         
